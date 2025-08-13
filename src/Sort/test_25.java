@@ -43,7 +43,7 @@ class Solution {
         Collections.sort(keySet, new MyComp());
         for(int i = 0 ; i<N; i++){
             //정렬한 스테이지 번호들을 answer에 저장
-            answer[i] = keySet.get(i);
+            answer[i] = keySet.get(i);//정렬된 key 값들의 모음을 사용해야한다.
         }
 
         //3) 정답 반환
@@ -55,7 +55,7 @@ class Solution {
         public int compare(Integer d1, Integer d2){
             if(map.get(d1) == map.get(d2))
                 return d1.compareTo(d2);
-            return map.get(d2).compareTo(map.get(d1));
+            return map.get(d2).compareTo(map.get(d1));//double의 기본형 compare값을 이용함
         }
     }
 }
