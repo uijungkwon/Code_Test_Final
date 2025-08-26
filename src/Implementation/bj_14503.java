@@ -41,7 +41,7 @@ public class bj_14503 {
                 if(arr[nx][ny] == 0) {
                     count++;
                     clean(nx, ny, dir);
-                    return;
+                    return;// 왜 여기서 끝내는지 핵심!!
                 }
             }
         }
@@ -53,5 +53,5 @@ public class bj_14503 {
             clean(bx, by, dir); //후진이니까 바라보는 방향은 유지
         }
     }
-
+//////DFS 원리 다시 따지기
 }
