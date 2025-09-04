@@ -41,7 +41,7 @@ public class bj_14503 {
             if(nx >= 0 && ny >= 0 && nx < N && ny < M) {
                 if(arr[nx][ny] == 0) {
                     count++;
-                    clean(nx, ny, dir);
+                    clean(nx, ny, dir);//전진
                     return;//(되돌아올 경우) 무작위 탐방이 아니라 아래에 있는 후진 코드 사용
                 }
             }
