@@ -1,13 +1,14 @@
-package Implementation;
+package Implementation.bj;
 import java.util.*;
-import java.io.*;
+
 public class bj_14503 {
-    //상하좌우 탐색
+
     static int N, M, r, c, d;
     static int[][] arr;
     static int count = 1; //시작 지점은 항상 청소되어 있지 않음
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, 1, 0, -1};
+
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
@@ -41,7 +42,7 @@ public class bj_14503 {
                 if(arr[nx][ny] == 0) {
                     count++;
                     clean(nx, ny, dir);
-                    return;// 왜 여기서 끝내는지 핵심!!
+                    return;//(되돌아올 경우) 무작위 탐방이 아니라 아래에 있는 후진 코드 사용
                 }
             }
         }
@@ -53,5 +54,4 @@ public class bj_14503 {
             clean(bx, by, dir); //후진이니까 바라보는 방향은 유지
         }
     }
-//////DFS 원리 다시 따지기
 }
