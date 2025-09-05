@@ -9,6 +9,8 @@ public class BJ_14499 {
     static int[] dx = new int[]{0,0,-1,1};
     static int[] dy = new int[]{1,-1,0,0};
     //주사위 모양을 두개의 배열로 나눠서 표기
+
+    ///핵심 포인트 주사위 평면도를 2개의 배열로 나눠 표기했음
     static int[] col = new int[4];//가로 부분
     static int[] row = new int[4];//세로 부분
     //1번 자리가 정답(공통 부분)
@@ -34,7 +36,7 @@ public class BJ_14499 {
         //테스트 시작
         st = new StringTokenizer(br.readLine());
         for(int tc = 0; tc<k; tc++){
-            //dir 방향으로 1칸 이동
+            //dir 방향으로 1칸 이동(탐색하는게 아니라 차례에 맞춰 한번만 굴림//
             int dir = Integer.parseInt(st.nextToken())-1;//방향입력
             int nx = x+dx[dir];
             int ny = y+dy[dir];
@@ -42,7 +44,7 @@ public class BJ_14499 {
             //그래프 밖으로 나갈 경우 해당 명령 무시
             if(nx<0 || ny<0|| nx>=n || ny>=m) continue;
 
-            //그래프 안에 있을 경우 방향에 맞춰 이동
+            //그래프 안에 있을 경우 방향에 맞춰 이동(주사위 위치는 즉시 갱신)
             x  = nx;
             y = ny;
 
@@ -65,6 +67,9 @@ public class BJ_14499 {
 
     }
     public static void change(int dir){
+        //핵심 포인트 2 -> 두개의 배열의 공통된 부분이 2번과 4번임
+        //따라서 한배열이 변경된다면 다른 배열의 2번과 4번도 동시 변경 되어야함
+
         //방향에 맞춰 회전 먼저 진행 (동시에 갱신)
         if(dir == 0){//동쪽 회전//오른쪽
             int tmp = col[col.length-1];
