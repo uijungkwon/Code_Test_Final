@@ -31,7 +31,6 @@ public class BJ_15683 {
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
         graph = new int[n][m];
-        visited = new boolean[n][m];
 
         for(int i= 0; i<n; i++){
             st = new StringTokenizer(br.readLine());
