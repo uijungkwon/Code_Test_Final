@@ -58,7 +58,7 @@ public class BJ_16236 {
             List<Idx> list = new ArrayList<>();
             visited = new boolean[n][n];
             
-            visited[pos_x][pos_y] = true;
+            visited[pos_x][pos_y] = true;//먹이를 먹으면 그 기준으로 가까운 곳을 탐색해야하니까 list의 첫번쨰 부분인 가장 가까운 놈만 먹고 새로 갱신해서 다시 가까운 놈을 갱신함!!
             q.add(new Idx(pos_x,pos_y,0));//첫 탐색 시작
 
             //먹을 물고기가 있는지 탐색 -> 바로 옆칸에 없어도 멀리 있을 수 있음
@@ -79,13 +79,15 @@ public class BJ_16236 {
                         if(map[nx][ny] <= size){
                             if(map[nx][ny] !=0 && map[nx][ny] <size)//먹을 수 있는 경우(동적)
                                 list.add(new Idx(nx,ny,move_num+1)); //한칸씩 이동하니까 move를 1씩 이동
-                            q.add(new Idx(nx,ny, move_num+1));
+                            q.add(new Idx(nx,ny, move_num+1));//이동한 칸의 개수를 누적 저장해야함 -> 상어위치를 갱신할때 몇 칸 이동했는지 정보 피룡
                         }
                     }
                 }
 
 
             }//두번째 while문  //모두 살펴봤는데 먹이가 없을 경우 종료
+
+
             if(list.size() == 0) break;
             else {
                 if(list.size() > 1)
