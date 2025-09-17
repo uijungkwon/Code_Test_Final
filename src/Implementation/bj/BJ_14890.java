@@ -63,7 +63,7 @@ public class BJ_14890 {
             else if(arr[i-1] > arr[i]){//내려가는 계단
                 if(!btn && arr[i-1] - arr[i] ==1){
                     btn = true;
-                    floor = 1;
+                    floor = 1;//초기화
                 }
                 else return false;
 
@@ -77,13 +77,13 @@ public class BJ_14890 {
             }//올라가는 계단
 //-------------------------
 
-            if(btn && floor==L){//진행 중에 경사로 세울 수 있음
+            if(btn && floor==L){//내려가는 계단으로 처리 완료
                 btn = false; //완성되면 다시 처리해주거든
                 floor = 0;//처리 완료
             }
 
         }//for문 끝
-
+        //항상 for문이 끝나더라도 남아있는 값을 확인해야할 경우에는 조건문 처리
         if(btn && floor<L) {//내려오는 계단 //마지막 부분 처리
             return false;
         }
