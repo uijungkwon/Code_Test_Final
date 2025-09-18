@@ -57,7 +57,7 @@ public class BJ_21608 {
             st= new StringTokenizer(br.readLine());
             /*학생 번호 입력 -> 학생 배열에 따로 저장*/
             student[i] = Integer.parseInt(st.nextToken());
-            /*좋아하는 학생 4명 입력*/
+            /*좋아하는 학생 4명 입력-> 처음엔 int[]로 설정했지만 하나씩 탐색 -> 시간 초과 -> 한번에 포함되었는지만 확인 -> set*/
             Set set = new HashSet();
             for(int j = 0; j<4; j++){
                 set.add(Integer.parseInt(st.nextToken()));
