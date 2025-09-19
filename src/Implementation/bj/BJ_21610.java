@@ -17,8 +17,8 @@ public class BJ_21610 {
     static List<Pos> list =new ArrayList<>();//클라우드의 위치만 넣기
     static int[]d;
     static int[]s;
-    static  int[] dx = {0, -1, -1, -1, 0, 1, 1, 1};
-    static  int[] dy = {-1, -1,  0,  1, 1, 1, 0, -1};
+    static  int[] dx = {0, -1, -1, -1, 0, 1, 1, 1};//1번부터 8번까지 방향을 정해놨으니 (x,y) 바뀌는 상하좌우 이동처럼 편하게 변수 생성
+    static  int[] dy = {-1, -1,  0,  1, 1, 1, 0, -1};//상하좌우 이동처럼 nx+dx[dir] 해당 방향대로 유지해서 s칸 이동하기
     public static void main(String[] args)throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -78,18 +78,9 @@ public class BJ_21610 {
         }
         System.out.println(result);
     }
-    public static void move(int dir, int s){ //여기서 노가다 보드 효율적으로 규칙 넣어서 수정
+    public static void move(int d, int s){ //여기서 노가다 보드 효율적으로 규칙 넣어서 수정
         //d방향으로 s만큼 이동
-        int k = ((s % n) + n) % n; // 혹시 모를 음수 대비
-        for (int i = 0; i < list.size(); i++) {
-            Pos p = list.get(i);
-            int nx = ((p.x - 1 + dx[dir - 1] * k) % n + n) % n + 1;
-            int ny = ((p.y - 1 + dy[dir - 1] * k) % n + n) % n + 1;
-            list.set(i, new Pos(nx, ny));
-        }
-
-        /*
-            for(int i = 0; i<list.size(); i++){
+            for(int i = 0; i<list.size(); i++){//규칙성
                 Pos pos = list.get(i);
                 int x = pos.x;
                 int y = pos.y;
@@ -103,25 +94,8 @@ public class BJ_21610 {
                 }
                 else if(d == 2){//왼쪽 위로 대각선
                     for(int j = 0; j<s; j++){
-
-                        if(x ==1 || y == 1){//둘중 하나라도 1이 있다면
-                            if (x == 1 && y == 1) {
-                                x = n;
-                                y = n;
-                            }
-                            else if(x==1 && y!=1){
-                                x = y+1;
-                                y = n;
-                            }
-                            else if(x!=1 && y==1){
-                                y = x-1;
-                                x = n;
-                            }
-                        }
-                        else {
-                            x = x-1;
-                            y = y-1;
-                        }
+                        x = (x == 1) ? n : x - 1;
+                        y = (y == 1) ? n : y - 1;
                     }
                 }
                 else if(d == 3){//위로
@@ -132,16 +106,9 @@ public class BJ_21610 {
                     }
                 }
                 else if(d == 4){//오른쪽 위 대각선
-                    for(int j = 0; j<s; j++){
-                        if(x ==1){
-                            int tmp =x;
-                            x = y;
-                            y = tmp;//서로 값 변경
-                        }
-                        else{
-                            x = x-1;
-                            y = y+1;
-                        }
+                    for (int j = 0; j < s; j++) {
+                        x = (x == 1) ? n : x - 1;
+                        y = (y == n) ? 1 : y + 1; //새로운 좌표값 갱신 -> 실수 X
                     }
                 }
                 else if(d == 5){//오른쪽
@@ -152,17 +119,9 @@ public class BJ_21610 {
                     }
                 }
                 else if(d == 6){//오른쪽 대각선 아래
-                    for(int j = 0; j<s; j++){
-                        if(x==n || y== n) {//다시 원점
-                            x = pos.x;
-                            y = pos.y;//원점 값 넣음
-
-                        }
-
-                        else {
-                            x = x+1;
-                            y = y+1;
-                        }
+                    for (int j = 0; j < s; j++) {
+                        x = (x == n) ? 1 : x + 1;
+                        y = (y == n) ? 1 : y + 1;//자기것만 보고 서로 영향을 주지 않음
                     }
 
                 }
@@ -174,28 +133,16 @@ public class BJ_21610 {
                     }
                 }
                 else{//8
-                    for(int j = 0; j<s; j++){
-                        if(x==n || y== n){
-                            int tmp = x;
-                            x = y;
-                            y = tmp;
-
-                        }
-                        else {
-                            x = x+1;
-                            y = y-1;
-                        }
+                    for (int j = 0; j < s; j++) {
+                        x = (x == n) ? 1 : x + 1;  // 각 x,y 좌표를 갱신함
+                        y = (y == 1) ? n : y - 1;
                     }
 
                 }
 
-                //객체 단위로 변경 가능
-                //System.out.println("x: "+x+", y: "+y);
                 list.set(i, new Pos(x,y));
             }
 
-
-*/
     }
     public static void rain(){
         for(int i = 0; i< list.size(); i++){
@@ -206,7 +153,7 @@ public class BJ_21610 {
 
     }
     public static void search(){
-        //구름 존재 하나씩 대각선 방향에 물 있는지 탐색
+        //구름 존재 하나씩 대각선 방향에 물 있는지 탐색(4가지 방향)-> 방향성에 중점을 둔 코드
         for(int i = 0; i< list.size(); i++){
             int cnt = 0;
             Pos pos = list.get(i);
