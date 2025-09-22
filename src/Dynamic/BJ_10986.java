@@ -7,34 +7,30 @@ public class BJ_10986 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
 
         /*탐색 시작*/
-        long cnt = 0L;
-        long[] C = new long[m];//나머지 값의 개수를 저장해야하니 m으로 설정
-        long[] s = new long[n+1];
-
-        s[0] = 0;
-
+        int result = 0;
+        int[] S = new int[N+1];
+        int[] C =new int[M];
         st = new StringTokenizer(br.readLine());
-        for(int i= 1; i<=n; i++){
-            long num = Long.parseLong(st.nextToken());
-            s[i] = (s[i-1]+num)%m;/*1. 누적합 점화식 */
+        for(int i = 1; i<=N; i++){
+            S[i] = (S[i-1]+Integer.parseInt(st.nextToken()))%3;
 
-            if(s[i] ==0) cnt++;//자기 자신을 포함하는 식 나머지가 0일때구간
-            //System.out.println(s[i]);
-            C[(int)s[i]] = C[(int) s[i]]+1 ;//각 나머지 값 별로 개수 저장하기
 
-        }
-        //2.최대 쌍의 개수 구하기
-        for(int i= 0; i<m; i++){
-            cnt = cnt+(C[i]*(C[i]-1)/2);//항상2개씩 뽑음(구간이니까)
-            //3C2, 2C2//나머지 개수들 중에서 2개씩 뽑아야함(i->j 구간을 찾아야하니까!!)
+            if(S[i] == 0)result++;//자기 자신을 포함하는 구간 존재 -> 카운터 세기
+            C[S[i]]++;
         }
 
-        /*정답 출력*/
-        System.out.println(cnt);
+        /*나머지가 0인 모든 구간의 경우의 수  탐색 하기 */
+        for(int i = 0; i<M; i++){
+            int temp = C[i]*(C[i]-1)/2;
+            result+=temp;
+        }
+
+        /*결과 출력*/
+        System.out.println(result);
     }
 }
