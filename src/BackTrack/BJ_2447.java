@@ -2,7 +2,7 @@ package BackTrack;
 
 import java.util.Scanner;
 
-public class BJ_2447 {
+public class BJ_2447 {//Top_down 방식 구현
     static char[][] arr;
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -22,10 +22,10 @@ public class BJ_2447 {
         System.out.println(sb);
     }
     public static void star(int x, int y, int N, boolean blank){
-        if(blank){
+        if(blank){//4번째 구간일 때만
             for(int i = x; i<x+N; i++){
                 for(int j = y; j<y+N; j++){
-                    arr[i][j] = ' ';
+                    arr[i][j] = ' '; //별 대신 채워줌
                 }
             }
             return;
@@ -37,7 +37,7 @@ public class BJ_2447 {
         }
         /*위의 상황이 아닐 경우 별로 채운다.*/
         int size = N/3;
-        int count = 0;
+        int count = 0;//새로 갱신
         for(int i = x; i<x+N; i+=size){//블럭으로 나누기
             for(int j = y; j<y+N; j+=size){ //모든 코드 다 확인
                 count++;
