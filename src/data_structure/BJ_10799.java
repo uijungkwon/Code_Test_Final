@@ -1,27 +1,35 @@
 package data_structure;
-import java.util.*;
+import java.util.*; //27분
 public class BJ_10799 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Deque<Character> stack = new ArrayDeque<>();
-        int sum = 0;
+        /*괄호 입력*/
         String str = sc.next();
-        for(int i = 0; i<str.length(); i++){
+        /*괄호 짝 맞추기를 위한 스택 생성*/
+        Deque<Character> stack = new ArrayDeque<>();
+
+        /*괄호 순차 탐색(짝이 맞는 괄호)*/
+        int result = 0;
+        for(int i =0; i<str.length(); i++){
             char c = str.charAt(i);
-            if(c =='('){
-                stack.push(c);
+            if(c == '('){
+                /*레이저인지 확인*/
+                if(str.charAt(i+1) == ')')//i와 i+1이 바로 붙었는지 확인
+                    result+=stack.size();//지금까지 넣은 막대 개수
+                else stack.offerLast(c);
             }
-            else if(c==')'){//무조건 짝이 맞는 괄호 생성
-                stack.pop();
-                if(str.charAt(i-1) =='('){//레이저일 경우(바로 이전과 짝을 이룰 경우
-                    sum = sum+stack.size();//레이저랑 막대기를 따로 구해서 자르는게 아님!
+
+            else if(c ==')') {
+                if(str.charAt(i-1) == '(')//레이저가 아니라면
+                    continue;
+                else{
+                    stack.pollLast();//어차피 한번에 1개가 짝지어서 빠지기 때문에 괄호가 닫히면 무리에서 벗어남!
+                    result+=1;
                 }
-                else{//레이저가 아닌 일반 괄호가 닫혀서 막대기 1개가 끝난 상황 -> 당연히 닫힌 괄호당 원소 1개니까
-                    sum++;
-                }
+
             }
         }
         /*정답 출력*/
-        System.out.println(sum);
+       System.out.println(result);
     }
 }
