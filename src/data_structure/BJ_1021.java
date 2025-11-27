@@ -4,51 +4,50 @@ public class BJ_1021 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        /*큐의 크기 N, 뽑아내려는 원소 개수M*/
+        /*큐의 크기N과 뽑으려는 수 M 입력*/
         int N = sc.nextInt();
-        Deque<Integer> dq = new ArrayDeque<>();
-        /*덱 초기화-> 위치가 곧 숫자다. A1 = 1*/
-        for(int i = 1; i<=N; i++){
-            dq.offer(i);
-        }
         int M = sc.nextInt();
-        int count = 0;
 
-        /*M개의 뽑아내려는 수의 "위치" 입력=> 위치가 곧 숫자이다.*/
-        //핵심: 덱의 앞쪽인지 뒤쪽인지 파악-> 앞쪽이면 큐, 뒤쪽이면 역방향 큐로 구현
-        for(int i= 0; i<M; i++){
-            int idx = sc.nextInt();//뽑아내려는 수의 위치
-            int pos = 0;//현재 덱에서 idx의 위치(pos)를 찾는다
+        /*원형 큐 생성*/
+        Deque<Integer> dq = new ArrayDeque<>();
+        for(int i = 1;i<=N; i++)
+            dq.offer(i);
 
-            /*매번 수열이 변화하므로 idx(처음 상태의 위치이기때문에 숫자와 동일)의 위치 먼저 찾아야함*/
+        /*변수 설정*/
+        int count =0;//2번,3번 연산의 횟수
+
+
+        /*M개의 뽑으려는 수 입력 후 연산 진행*/
+        for(int i = 0; i<M; i++){
+            int num = sc.nextInt();
+            int idx = 0;//매번 초기화 (0~dq.size()-1)
+            /*큐에서 뽑으려는 수인 num의 위치를 탐색*/
             for(Integer in:dq){
-                if(in == idx)break;
-                pos++;//"전제에 원소는 "앞"에서만 뽑는다고 되어있음 => 앞에서부터 파악(순회가능)
+                if(in == num)break;
+                idx++;
             }
 
-
-            if(pos == 0){//맨 앞에 있는 경우
+            /*찾은 위치로 연산 진행*/
+            if(idx ==0){
                 dq.pollFirst();
                 continue;
             }
-            else if(pos<=dq.size()/2){//앞쪽에 있는 경우=> 큐 처럼 구현
-                for(int j = 0; j<pos; j++){
-                    dq.offerLast(dq.pollFirst());//왼쪽으로 이동
-                    count++;//2번 연산 누적
+            else if(idx <= dq.size()/2){//num이 앞쪽에 있는 경우
+                for(int j = 0;j<idx;j++) {
+                    dq.offerLast(dq.pollFirst());//회전
+                    count++;
                 }
-                dq.pollFirst();//출력
-
+                dq.pollFirst();
             }
-            else{//반시계 방향으로 이동 (무조건 뺄 놈이 앞으로 와야함
-                for(int j = 0; j<dq.size()-pos; j++){
-                    dq.offerFirst(dq.pollLast());//왼쪽으로 이동
-                    count++;//2번 연산 누적
+            else {//num이 뒤쪽에 있는경우(크기를 뒤에서 빼야함)
+                for(int j = 0;j<dq.size()-idx;j++) {
+                    dq.offerFirst(dq.pollLast());//회전
+                    count++;
                 }
-                dq.pollFirst();//출력//같아지면 나와서 출력
+                dq.pollFirst();
             }
         }
-
-        /*결과 출력*/
+        /*정답 출력*/
         System.out.println(count);
     }
 }

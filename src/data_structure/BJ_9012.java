@@ -1,40 +1,47 @@
 package data_structure;
 import java.util.*;
-import java.io.*;
-
+//15분
 public class BJ_9012 {
     public static void main(String[] args){
-        Scanner sc =new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
+        /*명령어 개수 N 입력*/
+        int N = sc.nextInt();
+
+        /*N회 동안 테스트 */
         StringBuilder sb = new StringBuilder();
-        int tc = sc.nextInt();
+        Deque<Character> stack ;
 
-        /*테스트 시작*/
-        for(int t = 0; t<tc; t++){
-            Deque<Character> stack = new ArrayDeque<>();
-            String s = sc.next();
-            String result = "YES";
 
-            for(int i = 0; i<s.length(); i++){
-                char c = s.charAt(i);
-                if(c=='(')stack.push(c);
-                else if(c==')'){
-                    if(!stack.isEmpty() && stack.peek() =='(')
-                        stack.pop();
-                    //탐색이 끝나지 않았는데 이미 비어있으면 균형깨짐
-                    else {
-                        result = "NO";
+        for(int i =0; i<N; i++){
+            //새로운 괄호문 입력시 초기화
+            String str = sc.next();
+            boolean chk = true;
+            stack = new ArrayDeque<>();
+
+            for(int j = 0; j<str.length(); j++){
+                char c = str.charAt(j);
+                if(c == '(')
+                    stack.push(c);
+                else{
+                    if(stack.isEmpty()){//틀린경우1
+                        chk = false;
                         break;
                     }
+                    else stack.pop();
                 }
-            }
-            //밖으로 나왔는데도 stack에 무언가 남아있으면 탈락
-            if(!stack.isEmpty())result = "NO";
 
+            }
+            /*탐색 끝난 후 stack 점검*/
+            if(!stack.isEmpty())//틀린 경우 2
+                chk = false;
+
+            /*정답 출력*/
+            String result = "NO";
+            if(chk) result = "YES";
             sb.append(result).append('\n');
         }
-        /*정답 출력*/
+
+
         System.out.println(sb);
     }
-
-
 }
