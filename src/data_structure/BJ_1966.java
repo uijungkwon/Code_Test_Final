@@ -1,62 +1,74 @@
 package data_structure;
 import java.util.*;
 import java.io.*;
-class Order implements Comparable<Order>{//우선순위 큐를 사용하기 위해서는 정렬 사용!
-    int num;//중요도
-    int idx;//인덱스
-    public Order(int num, int idx){
-        this.num = num;
-        this.idx = idx;
+class Paper implements Comparable<Paper>{
+    int idx;//0부터
+    int priority;//1부터
+    public Paper(int idx,int priority){
+        this.idx =idx;
+        this.priority = priority;
     }
     @Override
-    public int compareTo(Order o){//중요도 내림차순 정렬 //얘는 일단 중요도만 비교함
-        return o.num - this.num;
+    public int compareTo(Paper p){
+        return p.priority - this.priority;//내림차순 정렬(큰 수 부터)
     }
 }
 public class BJ_1966 {
-
     public static void main(String[] args)throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+        BufferedReader br =new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
+        StringBuilder sb = new StringBuilder();
         int tc = Integer.parseInt(br.readLine());
         /*테스트 케이스 시작*/
-        for(int t = 0; t<tc; t++){
+        for(int T = 0; T<tc; T++){
+            /*문서개수 N, 찾으려는 문서의위치 M입력*/
             st = new StringTokenizer(br.readLine());
             int N = Integer.parseInt(st.nextToken());
             int M = Integer.parseInt(st.nextToken());
+            int myPri =0;//내가 뽑고자하는 위치의 중요도
 
-            PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());//기본타입_내림차순
-            Queue<Order> q = new LinkedList<>();
+            Queue<Paper> q = new LinkedList<>();//(위치, 중요도) 저장
+            List<Integer> pri = new ArrayList<>();//중요도 저장 -> 참고용
 
-            /*문서의 중요도 입력*/
             st = new StringTokenizer(br.readLine());
-            for(int i = 0; i<N; i++){//순서는 0번부터 시작
-                int num = Integer.parseInt(st.nextToken());
-                Order o  = new Order(num, i);
-                pq.offer(num);//숫자만 내림차순으로 정렬 -> q가 이걸보고 정렬
-                q.offer(o);
+            for(int i = 0; i<N; i++){
+                int priority = Integer.parseInt(st.nextToken());
+                if(i == M)
+                    myPri = priority;//M 위치에 있는 중요도를 저장
 
+                /*내림차순으로 중요도를 나타내는 리스트 따로 생성*/
+                pri.add(priority);
+                q.offer(new Paper(i,priority));
             }
-            /*pq에서 M번째 원소가 몇번째로 출력할 지 계산*/
-            int count =1;
-            while(!pq.isEmpty()){
-                int n = pq.poll();//기준 숫자 꺼내기
 
-                while(q.peek().num !=n ){
+            Collections.sort(pri, Collections.reverseOrder());//중요도가 큰 순서대로 저장(내림차순)
+
+            int result = 0;//M위치에 있는 문서가 뽑힌 순서
+            boolean chk = false;//result를 찾았는지의 유무
+
+            for(int i = 0; i<N; i++) {
+              /*중요도 탐색*/
+                int priority = pri.get(i);//중요도 하나씩 꺼냄
+                while(q.peek().priority!=priority){
+                    /*priority가 가장 앞에 올때까지 회전*/
                     q.offer(q.poll());
                 }
-                if(q.poll().idx == M) break;//인덱스까지 일치하면 아웃
-
-                count++;
-
+                /*가장 앞에 있는 값이 나의 중요도랑 같은지 확인*/
+                if(q.peek().priority == myPri){
+                    /*인덱스가 M과 같은지 확인*/
+                    if(q.peek().idx == M){
+                        result = i+1;
+                        chk = true;
+                        break;
+                    }
+                    else q.offer(q.poll());
+                }
+                else q.poll();
+                if(chk)break;
             }
-
-            /*정답 저장*/
-            sb.append(count).append('\n');
+            sb.append(result).append('\n');
         }
-
         /*정답 출력*/
         System.out.println(sb);
     }

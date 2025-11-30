@@ -1,44 +1,56 @@
 package data_structure;
 import java.util.*;
-public class BJ_1406 {//list의 가변적 특징을 사용하는 문제
+import java.io.*;//48분
+public class BJ_1406 {
     public static void main(String[] args)throws Exception {
-        Scanner sc = new Scanner(System.in);
-        StringBuilder sb = new StringBuilder();
-        StringTokenizer st ;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st  ;
 
-        String str = sc.next();//기준 문자열 입력
-        Deque<Character> left = new ArrayDeque<>();
-        Deque<Character> right = new ArrayDeque<>();
+        String str = br.readLine();
+        int N = Integer.parseInt(br.readLine());
 
-        /*문자열을 문자 단위로 list에 저장*/
-        for(int i = 0; i<str.length(); i++)
-            left.add(str.charAt(i));
+        /*문자가 담긴 뎈 초기화*/
+        Deque<Character> dq = new ArrayDeque<>();
+        Deque<Character> stack = new ArrayDeque<>();//떨어진 애들 담아내는 용도
+        for(int i = 0; i<str.length(); i++){
+            dq.offer(str.charAt(i));
+        }
 
-        int N = sc.nextInt();//명령어 개수
-        /*N회 동안 명령어 수행*/
-        for(int tc = 0; tc<N; tc++){
-            char c = sc.next().charAt(0);
-            if(c == 'L' && !left.isEmpty()){
-                right.offerFirst(left.pollLast());//뒤에꺼 빼서 옮기기
-            }
-            else if(c == 'D' && !right.isEmpty()){
-                left.offerLast(right.pollFirst());
-            }
-            else if(c == 'B' && !left.isEmpty()){
-                left.pollLast();
-            }
-            else if(c == 'P'){
-                char ch = sc.next().charAt(0);//추가할 문자 입력 받음
-                left.offerLast(ch);
-            }
+        for(int i = 0; i<N; i++){
+            st = new StringTokenizer(br.readLine());
+            String s = st.nextToken();
 
+            switch(s){
+                /*커서(pos) 왼쪽 이동*/
+                case "L":{
+                    if(!dq.isEmpty())
+                        stack.push(dq.pollLast());
+                    break;
+                }
+                case "D":{
+                    if(!stack.isEmpty())
+                        dq.offerLast(stack.poll());
+                    break;
+                }
+                case "B":{
+                    if(!dq.isEmpty()) {
+                        dq.pollLast();
+                    }
+                    break;
+                }
+                case "P":{
+                    String x = st.nextToken();
+                    dq.offerLast(x.charAt(0));//한 글자 추가
+                    break;
+                }
+            }
         }
         /*정답 출력*/
-        while(!left.isEmpty())
-            sb.append(left.pollFirst());
-        while(!right.isEmpty())
-            sb.append(right.pollFirst());
+        StringBuilder sb= new StringBuilder();
+        while(!dq.isEmpty())
+            sb.append(dq.pollFirst());
+        while(!stack.isEmpty())
+            sb.append(stack.poll());
         System.out.println(sb);
     }
 }
-//탐색 구현하기 // =>  탐색 알고리즘
