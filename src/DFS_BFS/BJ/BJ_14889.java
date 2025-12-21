@@ -39,7 +39,6 @@ public class BJ_14889 {
                 visited[i] = false;//전체 배열에서 T,F체크하고 있기 때문에 원상 복귀 안해주면, 값이 중복됨(r개만큼 output을 사용하는것이 아니라 전체 배열을 사용하고 있기 때문에!)
             }
         }
-
     }
     public static void diff(){
         int teamA = 0;
